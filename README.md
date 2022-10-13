@@ -1,2 +1,19 @@
 # SQL_With_Maths
 Solving SQL Problems with Maths
+--001_SQL_Remove_Reverse_Duplicate_From_Table.sql
+/*Logic: Value of ((x+y) + (x*y)) always same for reverse numbers*/
+
+SELECT * FROM ROUND_TRIP;
+INSERT INTO ROUND_TRIP VALUES(1,2);--IS_Reversed True
+INSERT INTO ROUND_TRIP VALUES(2,1);--IS_Reversed True
+INSERT INTO ROUND_TRIP VALUES(3,4);--IS_Reversed False
+INSERT INTO ROUND_TRIP VALUES(4,5);--IS_Reversed FALSE
+INSERT INTO ROUND_TRIP VALUES(6,7);--IS_Reversed True
+INSERT INTO ROUND_TRIP VALUES(7,6);--IS_Reversed True
+
+SELECT SOURCEID, TARGETID FROM 
+(
+    SELECT SOURCEID, TARGETID,
+    ROW_NUMBER() OVER (PARTITION BY (SOURCEID + TARGETID) + (SOURCEID * TARGETID) ORDER BY SOURCEID) RN
+    FROM ROUND_TRIP
+) WHERE RN = 1;
